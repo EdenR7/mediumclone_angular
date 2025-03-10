@@ -39,7 +39,6 @@ export const registerEffect = createEffect(
   },
   { functional: true }
 );
-
 export const redirectAfterRegisterEffect = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
@@ -86,7 +85,6 @@ export const LoginEffect = createEffect(
   },
   { functional: true }
 );
-
 export const redirectAfterLoginEffect = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
