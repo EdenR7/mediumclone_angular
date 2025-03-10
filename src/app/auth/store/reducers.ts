@@ -14,6 +14,7 @@ const authFeature = createFeature({
   name: 'auth',
   reducer: createReducer(
     initialState,
+    // REGISTER
     on(authActions.register, (state) => ({
       ...state,
       isSubmitting: true,
@@ -33,7 +34,7 @@ const authFeature = createFeature({
       isSubmitting: false,
       validationErrors: action.errors,
     })),
-    // Login
+    // LOGIN
     on(authActions.login, (state) => ({
       ...state,
       isSubmitting: true,
@@ -48,6 +49,21 @@ const authFeature = createFeature({
       ...state,
       isSubmitting: false,
       validationErrors: action.errors,
+    })),
+    // GET USER
+    on(authActions.getCurrentUser, (state) => ({
+      ...state,
+      isLoading: true,
+    })),
+    on(authActions.getCurrentUserSuccess, (state, action) => ({
+      ...state,
+      isLoading: false,
+      currentUser: action.currentUser,
+    })),
+    on(authActions.getCurrentUserFailure, (state, action) => ({
+      ...state,
+      isLoading: false,
+      currentUser: null,
     })),
     // On event of routing we will make sure we clean the errors as it unneccessery anymore
     on(routerNavigationAction, (state) => ({

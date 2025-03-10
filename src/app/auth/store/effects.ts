@@ -8,6 +8,7 @@ import { PersistanceService } from '../../shared/services/persistance.service';
 import { Router } from '@angular/router';
 import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
 
+// Register effects
 export const registerEffect = createEffect(
   (
     // Injections
@@ -54,6 +55,7 @@ export const redirectAfterRegisterEffect = createEffect(
   }
 );
 
+// Login effects
 export const LoginEffect = createEffect(
   (
     // Injections
@@ -61,7 +63,7 @@ export const LoginEffect = createEffect(
     authService = inject(AuthService),
     persistanceService = inject(PersistanceService)
   ) => {
-    console.log('registerEffect');
+    console.log('LoginEffect');
     return actions$.pipe(
       ofType(authActions.login), // ensure its the register action
       switchMap(({ request }) => {
@@ -98,4 +100,34 @@ export const redirectAfterLoginEffect = createEffect(
     functional: true,
     dispatch: false,
   }
+);
+
+// Get user effects
+export const getCurrentUserEffect = createEffect(
+  (
+    actions$ = inject(Actions),
+    authService = inject(AuthService),
+    persistanceService = inject(PersistanceService)
+  ) => {
+    console.log('getCurrentUser');
+    return actions$.pipe(
+      ofType(authActions.getCurrentUser),
+      switchMap(() => {
+        const token = persistanceService.get('accessToken');
+        if (!token) {
+          // If there isnt token so we shouldnt send the get user request
+          return of(authActions.getCurrentUserFailure());
+        }
+        return authService.getCurrentUser().pipe(
+          map((currentUser: CurrentUserInterface) => {
+            return authActions.getCurrentUserSuccess({ currentUser });
+          }),
+          catchError(() => {
+            return of(authActions.getCurrentUserFailure());
+          })
+        );
+      })
+    );
+  },
+  { functional: true }
 );
