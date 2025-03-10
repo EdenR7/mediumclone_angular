@@ -1,18 +1,41 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
-import { AuthStateInterface } from '../types/authState.interface';
-import { register } from './actions';
+import {createFeature, createReducer, on} from '@ngrx/store'
+import {AuthStateInterface} from '../types/authState.interface'
+import {authActions} from './actions'
 
 const initialState: AuthStateInterface = {
   isSubmitting: false,
-};
+  isLoading: false,
+  currentUser: undefined,
+  validationErrors: null,
+}
 
-// The usage of createFeature allow us to not writing selectors, in contrast to createReducer method
 const authFeature = createFeature({
   name: 'auth',
   reducer: createReducer(
     initialState,
-    on(register, (prevState) => ({ ...prevState, isSubmitting: true }))
+    on(authActions.register, (state) => ({
+      ...state,
+      isSubmitting: true,
+      validationErrors: null,
+    })),
+    on(authActions.registerSuccess, (state, action) => ({
+      ...state,
+      isSubmitting: false,
+      currentUser: action.currentUser,
+    })),
+    on(authActions.registerFailure, (state, action) => ({
+      ...state,
+      isSubmitting: false,
+      validationErrors: action.errors,
+    }))
   ),
-});
+})
 
-export const { name: authFeatureKey, reducer: authReducer, selectIsSubmitting } = authFeature;
+export const {
+  name: authFeatureKey,
+  reducer: authReducer,
+  selectIsSubmitting,
+  selectIsLoading,
+  selectCurrentUser,
+  selectValidationErrors,
+} = authFeature
