@@ -54,6 +54,7 @@ export class RegisterComponent {
     const request: RegisterRequestInterface = {
       user: this.form.getRawValue(),
     };
+    // Trigger the action 
     this.store.dispatch(authActions.register({ request }));
   }
 }

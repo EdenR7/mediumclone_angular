@@ -3,6 +3,7 @@ import {RegisterRequestInterface} from '../types/registerRequest.interface'
 import { CurrentUser } from '../../shared/types/currentUser.interface'
 import { BackendErrorsInterface } from '../../shared/types/backendErros.interface'
 
+// Create actionGroup instead 3 different objects
 export const authActions = createActionGroup({
   source: 'auth',
   events: {
