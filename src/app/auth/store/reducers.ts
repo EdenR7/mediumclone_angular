@@ -1,13 +1,13 @@
-import {createFeature, createReducer, on} from '@ngrx/store'
-import {AuthStateInterface} from '../types/authState.interface'
-import {authActions} from './actions'
+import { createFeature, createReducer, on } from '@ngrx/store';
+import { AuthStateInterface } from '../types/authState.interface';
+import { authActions } from './actions';
 
 const initialState: AuthStateInterface = {
   isSubmitting: false,
   isLoading: false,
   currentUser: undefined,
   validationErrors: null,
-}
+};
 
 const authFeature = createFeature({
   name: 'auth',
@@ -18,18 +18,38 @@ const authFeature = createFeature({
       isSubmitting: true,
       validationErrors: null,
     })),
-    on(authActions.registerSuccess, (state, action) => ({
+    on(authActions.registerSuccess, (state, action) => {
+      console.log(action);
+      console.log(action.currentUser);
+      return {
+        ...state,
+        isSubmitting: false,
+        currentUser: action.currentUser,
+      };
+    }),
+    on(authActions.registerFailure, (state, action) => ({
+      ...state,
+      isSubmitting: false,
+      validationErrors: action.errors,
+    })),
+    // Login
+    on(authActions.login, (state) => ({
+      ...state,
+      isSubmitting: true,
+      validationErrors: null,
+    })),
+    on(authActions.loginSuccess, (state, action) => ({
       ...state,
       isSubmitting: false,
       currentUser: action.currentUser,
     })),
-    on(authActions.registerFailure, (state, action) => ({
+    on(authActions.loginFailure, (state, action) => ({
       ...state,
       isSubmitting: false,
       validationErrors: action.errors,
     }))
   ),
-})
+});
 
 export const {
   name: authFeatureKey,
@@ -38,4 +58,4 @@ export const {
   selectIsLoading,
   selectCurrentUser,
   selectValidationErrors,
-} = authFeature
+} = authFeature;

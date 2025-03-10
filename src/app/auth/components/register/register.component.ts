@@ -13,16 +13,19 @@ import {
   selectValidationErrors,
 } from '../../store/reducers';
 import { authActions } from '../../store/actions';
-import { BackendErrorsInterface } from '../../../shared/types/backendErros.interface';
-import { AuthResponseInterface } from '../../types/authResponse.interface';
-import { CurrentUser } from '../../../shared/types/currentUser.interface';
 import { AuthStateInterface } from '../../types/authState.interface';
-import { BackendErrorMessagesComponent } from "../../../shared/components/backend-error-messages/backend-error-messages.component";
+import { BackendErrorMessagesComponent } from '../../../shared/components/backend-error-messages/backend-error-messages.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, RouterLink, BackendErrorMessagesComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    RouterLink,
+    BackendErrorMessagesComponent,
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
@@ -54,7 +57,7 @@ export class RegisterComponent {
     const request: RegisterRequestInterface = {
       user: this.form.getRawValue(),
     };
-    // Trigger the action 
+    // Trigger the action
     this.store.dispatch(authActions.register({ request }));
   }
 }

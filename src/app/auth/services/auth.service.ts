@@ -2,9 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RegisterRequestInterface } from '../types/registerRequest.interface';
 import { map, Observable } from 'rxjs';
-import { CurrentUser } from '../../shared/types/currentUser.interface';
 import { AuthResponseInterface } from '../types/authResponse.interface';
 import { environment } from '../../../environments/environment';
+import { LoginRequestInterface } from '../types/loginRequest.interface';
+import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
+
+const usersUrl = environment.API_BASE_URL + 'users/';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +15,19 @@ import { environment } from '../../../environments/environment';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  register(data: RegisterRequestInterface): Observable<CurrentUser> {
+  getUser(response: AuthResponseInterface): CurrentUserInterface {
+    return response.user;
+  }
+
+  register(data: RegisterRequestInterface): Observable<CurrentUserInterface> {
     return this.http
-      .post<AuthResponseInterface>(environment.API_BASE_URL + 'users', data)
-      .pipe(map((response) => response.user));
+      .post<AuthResponseInterface>(usersUrl, data)
+      .pipe(map(this.getUser));
+  }
+
+  login(data: LoginRequestInterface): Observable<CurrentUserInterface> {
+    return this.http
+      .post<AuthResponseInterface>(usersUrl + 'login', data)
+      .pipe(map(this.getUser));
   }
 }
