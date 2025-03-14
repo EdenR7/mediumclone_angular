@@ -2,5 +2,5 @@ import { ArticleInterface } from '../../../types/article.interface';
 
 export interface GetFeedResponseInterface {
   articles: ArticleInterface[];
-  articleCount: number;
+  articlesCount: number;
 }
