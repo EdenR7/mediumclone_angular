@@ -14,6 +14,7 @@ import { LoadingComponent } from '../loading/loading.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { environment } from '../../../../environments/environment';
 import queryString from 'query-string';
+import { TagListComponent } from "../tag-list/tag-list.component";
 
 @Component({
   selector: 'app-feed',
@@ -23,7 +24,8 @@ import queryString from 'query-string';
     ErrorMessageComponent,
     LoadingComponent,
     PaginationComponent,
-  ],
+    TagListComponent
+],
   templateUrl: './feed.component.html',
 })
 export class FeedComponent implements OnInit {

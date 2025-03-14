@@ -13,12 +13,17 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideEffects } from '@ngrx/effects';
 import * as authEffects from './auth/store/effects';
 import * as feedEffects from './shared/components/feed/store/effects';
+import * as tagsEffects from './shared/components/popular-tags/store/effects';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { authInterceptor } from './shared/services/authInterceptor';
 import {
   feedFeatureKey,
   feedReducer,
 } from './shared/components/feed/store/reducers';
+import {
+  tagsFeatureKey,
+  tagsReducer,
+} from './shared/components/popular-tags/store/reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,8 +32,9 @@ export const appConfig: ApplicationConfig = {
     provideRouterStore(),
     provideStore({ router: routerReducer }),
     provideState(authFeatureKey, authReducer),
-    provideEffects(authEffects, feedEffects),
+    provideEffects(authEffects, feedEffects, tagsEffects),
     provideState(feedFeatureKey, feedReducer),
+    provideState(tagsFeatureKey, tagsReducer),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
