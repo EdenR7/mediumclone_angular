@@ -10,6 +10,7 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-popular-tags',
+  standalone: true,
   imports: [CommonModule, LoadingComponent, ErrorMessageComponent, RouterLink],
   templateUrl: './popular-tags.component.html',
   styleUrl: './popular-tags.component.scss',
@@ -23,6 +24,7 @@ export class PopularTagsComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    console.log('Tags');
     this.store.dispatch(tagsActions.getTags());
   }
 }

@@ -2,8 +2,8 @@
   <app-loading *ngIf="data.isLoading"></app-loading>
   <app-error-message *ngIf="data.error"></app-error-message>
   <div *ngIf="data.tags" class="sideBar">
-    <p>Popular Tags</p>
-    <div class="tag-list">
+    <!-- <p>Popular Tags</p> -->
+    <div class="tag-lists">
       <a *ngFor="let tag of data.tags" [routerLink]="['/tags', tag]" class="tag-default tag-pill">
         {{ tag }}
       </a>

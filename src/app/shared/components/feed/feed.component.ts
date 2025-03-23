@@ -1,7 +1,14 @@
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { feedActions } from './store/actions';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import {
   selectError,
   selectFeedState,
@@ -14,25 +21,26 @@ import { LoadingComponent } from '../loading/loading.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { environment } from '../../../../environments/environment';
 import queryString from 'query-string';
-import { TagListComponent } from "../tag-list/tag-list.component";
+import { TagListComponent } from '../tag-list/tag-list.component';
 
 @Component({
   selector: 'app-feed',
+  standalone: true,
   imports: [
     CommonModule,
     RouterLink,
     ErrorMessageComponent,
     LoadingComponent,
     PaginationComponent,
-    TagListComponent
-],
+    TagListComponent,
+  ],
   templateUrl: './feed.component.html',
 })
-export class FeedComponent implements OnInit {
+export class FeedComponent implements OnInit, OnChanges {
   @Input() apiUrl: string = '';
-  public store = inject(Store);
-  public route = inject(ActivatedRoute);
-  public router = inject(Router);
+  private store = inject(Store);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
   data$ = combineLatest({
     isLoading: this.store.select(selectIsLoading),
     error: this.store.select(selectError),
@@ -41,20 +49,29 @@ export class FeedComponent implements OnInit {
   limit = environment.limit;
   baseUrl = this.router.url.split('?')[0];
   currentPage = 0;
+
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.currentPage = Number(params['page']) || 1;
+      this.currentPage = Number(params['page'] || 1);
       this.fetchFeed();
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['apiUrl'] && !changes['apiUrl'].firstChange) {
+      this.currentPage = 1; // Reset to first page when changing tags
+      this.fetchFeed();
+    }
+  }
+
   fetchFeed(): void {
+    if (!this.apiUrl) return;
+
     const offset = this.currentPage * this.limit - this.limit;
     const parsedUrl = queryString.parseUrl(this.apiUrl);
-    console.log(parsedUrl);
     const stringifiedParams = queryString.stringify({
       limit: this.limit,
-      offset: offset,
+      offset,
       ...parsedUrl.query,
     });
     const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`;
