@@ -26,7 +26,7 @@ export const routes: Routes = [
       import('./tagFeed/tagFeed.routes').then((m) => m.routes),
   },
   {
-    path: 'article/:id',
+    path: 'articles/:slug',
     loadChildren: () =>
       import('./article/article.routes').then((m) => m.routes),
   },

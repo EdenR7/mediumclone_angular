@@ -6,7 +6,7 @@ import { ArticleStateInterface } from '../../shared/types/article.interface';
 const initialState: ArticleStateInterface = {
   isLoading: false,
   error: null,
-  data: null,
+  article: null,
 };
 
 const articleFeature = createFeature({
@@ -23,7 +23,7 @@ const articleFeature = createFeature({
       return {
         ...state,
         isLoading: false,
-        data: action.article,
+        article: action.article,
       };
     }),
     on(articleActions.getArticleFailure, (state, action) => ({
@@ -40,7 +40,7 @@ export const {
   name: articleFeatureKey,
   reducer: articleReducer,
   selectArticleState,
-  selectData,
+  selectArticle,
   selectIsLoading,
   selectError,
 } = articleFeature;

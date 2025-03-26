@@ -21,5 +21,5 @@ export interface ArticleResponseInterface {
 export interface ArticleStateInterface {
   isLoading: boolean;
   error: string | null;
-  data: ArticleInterface | null;
+  article: ArticleInterface | null;
 }
