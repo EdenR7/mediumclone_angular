@@ -13,3 +13,13 @@ export interface ArticleInterface {
   updatedAt: Date;
   author: ProfileInterface;
 }
+
+export interface ArticleResponseInterface {
+  article: ArticleInterface;
+}
+
+export interface ArticleStateInterface {
+  isLoading: boolean;
+  error: string | null;
+  data: ArticleInterface | null;
+}
