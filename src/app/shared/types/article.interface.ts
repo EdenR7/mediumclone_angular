@@ -1,3 +1,4 @@
+import { articleFormValuesInterface } from '../components/article-form/article-form.types';
 import { PopularTagInterface } from '../components/popular-tags/tags.interface';
 import { ProfileInterface } from './profile.interface';
 
@@ -22,4 +23,8 @@ export interface ArticleStateInterface {
   isLoading: boolean;
   error: string | null;
   article: ArticleInterface | null;
+}
+
+export interface createArticleReqInterface {
+  article: articleFormValuesInterface;
 }

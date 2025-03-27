@@ -2,13 +2,13 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { articleActions } from './actions';
 import { ArticleStateInterface } from '../../shared/types/article.interface';
+import { BackendErrorsInterface } from '../../shared/types/backendErros.interface';
 
 const initialState: ArticleStateInterface = {
   isLoading: false,
   error: null,
   article: null,
 };
-
 const articleFeature = createFeature({
   name: 'article',
   reducer: createReducer(

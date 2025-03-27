@@ -31,6 +31,7 @@ export const getArticleEffect = createEffect(
   { functional: true }
 );
 
+// DELETE EFFECTS
 export const deleteArticleEffect = createEffect(
   (
     // Injections
@@ -53,13 +54,57 @@ export const deleteArticleEffect = createEffect(
   },
   { functional: true }
 );
-
 export const redirectAfterDeleteArticleEffect = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
       ofType(articleActions.deleteArticleSuccess),
       tap(() => {
         router.navigateByUrl('/');
+      })
+    );
+  },
+  {
+    functional: true,
+    dispatch: false,
+  }
+);
+
+// CREATE EFFECTS
+export const createArticleEffect = createEffect(
+  (
+    // Injections
+    actions$ = inject(Actions),
+    sharedArticleService = inject(SharedArticleService)
+  ) => {
+    return actions$.pipe(
+      ofType(articleActions.createArticle),
+      switchMap(({ request }) => {
+        console.log(request);
+
+        return sharedArticleService.createArticle(request).pipe(
+          map((article) => {
+            return articleActions.createArticleSuccess({ article });
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            console.log(errorResponse.error.errors);
+            return of(
+              articleActions.createArticleFailure({
+                errors: errorResponse.error.errors,
+              })
+            );
+          })
+        );
+      })
+    );
+  },
+  { functional: true }
+);
+export const redirectAfterCreateArticleEffect = createEffect(
+  (actions$ = inject(Actions), router = inject(Router)) => {
+    return actions$.pipe(
+      ofType(articleActions.createArticleSuccess),
+      tap(({ article }) => {
+        router.navigate(['/articles', article.slug]);
       })
     );
   },
