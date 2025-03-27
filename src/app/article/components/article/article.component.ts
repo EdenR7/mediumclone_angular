@@ -12,13 +12,19 @@ import {
 import { selectCurrentUser } from '../../../auth/store/reducers';
 import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
 import { CommonModule } from '@angular/common';
-import { LoadingComponent } from "../../../shared/components/loading/loading.component";
-import { ErrorMessageComponent } from "../../../shared/components/error-message/error-message.component";
-import { TagListComponent } from "../../../shared/components/tag-list/tag-list.component";
+import { LoadingComponent } from '../../../shared/components/loading/loading.component';
+import { ErrorMessageComponent } from '../../../shared/components/error-message/error-message.component';
+import { TagListComponent } from '../../../shared/components/tag-list/tag-list.component';
 
 @Component({
   selector: 'app-article',
-  imports: [CommonModule, RouterLink, LoadingComponent, ErrorMessageComponent, TagListComponent],
+  imports: [
+    CommonModule,
+    RouterLink,
+    LoadingComponent,
+    ErrorMessageComponent,
+    TagListComponent,
+  ],
   templateUrl: './article.component.html',
   styleUrl: './article.component.scss',
 })
@@ -56,5 +62,9 @@ export class ArticleComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(articleActions.getArticle({ slug: this.slug }));
+  }
+
+  deleteArticle(): void {
+    this.store.dispatch(articleActions.deleteArticle({ slug: this.slug }));
   }
 }
