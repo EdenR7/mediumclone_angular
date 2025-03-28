@@ -113,3 +113,46 @@ export const redirectAfterCreateArticleEffect = createEffect(
     dispatch: false,
   }
 );
+
+// EDIT EFFECTS
+export const editArticleEffect = createEffect(
+  (
+    // Injections
+    actions$ = inject(Actions),
+    sharedArticleService = inject(SharedArticleService)
+  ) => {
+    return actions$.pipe(
+      ofType(articleActions.editArticle),
+      switchMap(({ request, slug }) => {
+        return sharedArticleService.editArticle(request, slug).pipe(
+          map((article) => {
+            return articleActions.editArticleSuccess({ article });
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            console.log(errorResponse.error.errors);
+            return of(
+              articleActions.editArticleFailure({
+                errors: errorResponse.error.errors,
+              })
+            );
+          })
+        );
+      })
+    );
+  },
+  { functional: true }
+);
+export const redirectAfterEditArticleEffect = createEffect(
+  (actions$ = inject(Actions), router = inject(Router)) => {
+    return actions$.pipe(
+      ofType(articleActions.editArticleSuccess),
+      tap(({ article }) => {
+        router.navigate(['/articles', article.slug]);
+      })
+    );
+  },
+  {
+    functional: true,
+    dispatch: false,
+  }
+);

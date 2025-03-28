@@ -36,4 +36,14 @@ export class ArticleService {
       .post<ArticleResponseInterface>(fullUrl, article)
       .pipe(map((response) => response.article));
   }
+
+  editArticle(
+    article: createArticleReqInterface,
+    slug: string
+  ): Observable<ArticleInterface> {
+    const fullUrl = articleUrl + slug;
+    return this.http
+      .put<ArticleResponseInterface>(fullUrl, article)
+      .pipe(map((response) => response.article));
+  }
 }

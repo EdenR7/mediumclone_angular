@@ -9,6 +9,11 @@ import {
   createArticleFeatureKey,
   createArticleReducer,
 } from './store/createArticleReducer';
+import { EditArticleComponent } from './components/edit-article/edit-article.component';
+import {
+  editArticleFeatureKey,
+  editArticleReducer,
+} from './store/editArticleReducer';
 
 export const routes: Route[] = [
   {
@@ -17,6 +22,15 @@ export const routes: Route[] = [
     providers: [
       provideState(createArticleFeatureKey, createArticleReducer),
       provideEffects(ArticleEffects),
+    ],
+  },
+  {
+    path: ':slug/edit',
+    component: EditArticleComponent,
+    providers: [
+      provideEffects(ArticleEffects),
+      provideState(editArticleFeatureKey, editArticleReducer),
+      provideState(articleFeatureKey, articleReducer),
     ],
   },
   {

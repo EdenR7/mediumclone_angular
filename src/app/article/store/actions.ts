@@ -19,5 +19,12 @@ export const articleActions = createActionGroup({
     'Create Article': props<{ request: createArticleReqInterface }>(),
     'Create Article success': props<{ article: ArticleInterface }>(),
     'Create Article failure': props<{ errors: BackendErrorsInterface }>(),
+
+    'Edit Article': props<{
+      request: createArticleReqInterface;
+      slug: string;
+    }>(),
+    'Edit Article success': props<{ article: ArticleInterface }>(),
+    'Edit Article failure': props<{ errors: BackendErrorsInterface }>(),
   },
 });
